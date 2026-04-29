@@ -435,7 +435,7 @@ const normalizeSKUsForSubmit = () => {
     seenCode.add(codeKey)
 
     const priceAmount = Number(item.price_amount)
-    if (!Number.isFinite(priceAmount) || priceAmount <= 0) {
+    if (!Number.isFinite(priceAmount) || priceAmount < 0) {
       throw new Error(t('admin.products.errors.skuPriceInvalid', { index: index + 1 }))
     }
 
