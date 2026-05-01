@@ -60,6 +60,7 @@ export interface AdminProduct {
   fulfillment_type: string
   manual_form_schema: Record<string, unknown> | null
   manual_stock_total: number
+  display_stock_quantity: number | null
   manual_stock_locked: number
   manual_stock_sold: number
   payment_channel_ids: string

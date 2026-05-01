@@ -150,6 +150,7 @@ const form = reactive({
   max_purchase_quantity: '' as number | '',
   fulfillment_type: 'manual',
   manual_stock_total: 0,
+  display_stock_quantity: '' as number | '',
   skus: [] as SKUFormItem[],
   category_id: null as number | null,
   payment_channel_ids: [] as number[],
@@ -481,6 +482,7 @@ const resetForm = () => {
     max_purchase_quantity: '',
     fulfillment_type: 'manual',
     manual_stock_total: 0,
+    display_stock_quantity: '',
     skus: [],
     category_id: null,
     payment_channel_ids: [],
@@ -526,6 +528,7 @@ const populateForm = (product: AdminProduct) => {
     max_purchase_quantity: Number(product.max_purchase_quantity || 0) > 0 ? Math.floor(Number(product.max_purchase_quantity || 0)) : '',
     fulfillment_type: product.fulfillment_type || 'manual',
     manual_stock_total: resolveManualStockMetrics(product).total,
+    display_stock_quantity: product.display_stock_quantity == null ? '' : toSafeInt(product.display_stock_quantity),
     skus: Array.isArray(product.skus) ? product.skus.map((item: AdminProductSKU) => createSKUFormItem(item)) : [],
     category_id: Number(product.category_id || 0) || null,
     payment_channel_ids: parsePaymentChannelIDs(product.payment_channel_ids),
@@ -570,6 +573,12 @@ const handleSubmit = async () => {
           return activeRows.reduce((sum, item) => sum + toSafeStockTotal(item.manual_stock_total), 0)
         })()
       : toSafeStockTotal(form.manual_stock_total)
+    const normalizedDisplayStockQuantity = form.display_stock_quantity === '' || form.display_stock_quantity == null
+      ? null
+      : (() => {
+          const value = Math.floor(Number(form.display_stock_quantity))
+          return Number.isFinite(value) && value > 0 ? value : null
+        })()
 
     const payload = {
       slug: String(form.slug || '').trim(),
@@ -588,6 +597,7 @@ const handleSubmit = async () => {
         : 0,
       fulfillment_type: form.fulfillment_type,
       manual_stock_total: effectiveManualStockTotal,
+      display_stock_quantity: normalizedDisplayStockQuantity,
       skus: normalizedSKUs,
       payment_channel_ids: form.payment_channel_ids.length > 0 ? form.payment_channel_ids : [],
       is_affiliate_enabled: form.is_affiliate_enabled,
@@ -801,6 +811,17 @@ watch(
               {{ t('admin.products.form.manualStockTotalSkuTip') }}
             </p>
             <p v-else class="mt-1 text-xs text-muted-foreground">{{ t('admin.products.form.manualStockTotalTip') }}</p>
+          </div>
+
+          <div class="col-span-1">
+            <label class="block text-xs font-medium text-muted-foreground mb-1.5">{{ t('admin.products.form.displayStockQuantity') }}</label>
+            <Input
+              v-model.number="form.display_stock_quantity"
+              type="number"
+              min="1"
+              :placeholder="t('admin.products.form.displayStockQuantityPlaceholder')"
+            />
+            <p class="mt-1 text-xs text-muted-foreground">{{ t('admin.products.form.displayStockQuantityTip') }}</p>
           </div>
 
           <div v-if="form.fulfillment_type === 'manual' || editingIsMapped" class="col-span-1 md:col-span-2 rounded-xl border border-border bg-muted/20 p-4 space-y-4">
