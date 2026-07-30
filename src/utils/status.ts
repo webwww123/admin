@@ -9,6 +9,8 @@ export const orderStatusLabel = (t: TranslateFn, status?: string) => {
     partially_delivered: t('order.status.partially_delivered'),
     delivered: t('order.status.delivered'),
     completed: t('order.status.completed'),
+    partially_refunded: t('order.status.partially_refunded'),
+    refunded: t('order.status.refunded'),
     canceled: t('order.status.canceled'),
   }
   return map[status] || status
@@ -25,6 +27,10 @@ export const orderStatusClass = (status?: string) => {
     case 'delivered':
     case 'completed':
       return 'text-slate-800 border-slate-200 bg-slate-50'
+    case 'partially_refunded':
+      return 'text-orange-700 border-orange-200 bg-orange-50'
+    case 'refunded':
+      return 'text-rose-700 border-rose-200 bg-rose-50'
     case 'canceled':
       return 'text-slate-500 border-slate-200 bg-slate-50'
     default:
@@ -40,6 +46,8 @@ export const paymentStatusLabel = (t: TranslateFn, status?: string) => {
     success: t('payment.status.success'),
     failed: t('payment.status.failed'),
     expired: t('payment.status.expired'),
+    partially_refunded: t('payment.status.partially_refunded'),
+    refunded: t('payment.status.refunded'),
   }
   return map[status] || status
 }
@@ -51,6 +59,10 @@ export const paymentStatusClass = (status?: string) => {
     case 'pending':
       return 'text-amber-700 border-amber-200 bg-amber-50'
     case 'failed':
+      return 'text-rose-700 border-rose-200 bg-rose-50'
+    case 'partially_refunded':
+      return 'text-orange-700 border-orange-200 bg-orange-50'
+    case 'refunded':
       return 'text-rose-700 border-rose-200 bg-rose-50'
     case 'expired':
       return 'text-slate-500 border-slate-200 bg-slate-50'

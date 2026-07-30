@@ -128,7 +128,7 @@ const jumpToPage = () => {
 
 const canUpdateStatus = (order: AdminOrder) => {
   if (!order) return false
-  return order.status !== 'completed' && order.status !== 'canceled'
+  return !['completed', 'canceled', 'partially_refunded', 'refunded'].includes(order.status)
 }
 
 const updateStatus = async (order: AdminOrder) => {
@@ -296,6 +296,8 @@ watch(
               <SelectItem value="partially_delivered">{{ t('order.status.partially_delivered') }}</SelectItem>
               <SelectItem value="delivered">{{ t('order.status.delivered') }}</SelectItem>
               <SelectItem value="completed">{{ t('order.status.completed') }}</SelectItem>
+              <SelectItem value="partially_refunded">{{ t('order.status.partially_refunded') }}</SelectItem>
+              <SelectItem value="refunded">{{ t('order.status.refunded') }}</SelectItem>
               <SelectItem value="canceled">{{ t('order.status.canceled') }}</SelectItem>
             </SelectContent>
           </Select>
