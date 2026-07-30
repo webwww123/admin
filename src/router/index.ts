@@ -24,6 +24,12 @@ const routes = [
         component: () => import('@/views/Forbidden.vue'),
       },
       {
+        path: 'behavior-analytics',
+        name: 'behavior-analytics',
+        component: () => import('@/views/admin/BehaviorAnalytics.vue'),
+        meta: { permission: 'GET:/admin/behavior-analytics/overview' },
+      },
+      {
         path: 'products',
         name: 'products',
         component: () => import('@/views/admin/Products.vue'),

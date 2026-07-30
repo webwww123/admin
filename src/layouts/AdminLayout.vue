@@ -43,6 +43,7 @@ import {
   Crown,
   Bell,
   ImageIcon,
+  MousePointerClick,
 } from 'lucide-vue-next'
 import { Menu } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
@@ -199,6 +200,12 @@ const navGroups = computed<NavGroup[]>(() => {
           to: '/user-login-logs',
           icon: History,
           permission: 'GET:/admin/user-login-logs',
+        },
+        {
+          label: t('admin.navItems.behaviorAnalytics'),
+          to: '/behavior-analytics',
+          icon: MousePointerClick,
+          permission: 'GET:/admin/behavior-analytics/overview',
         },
         {
           label: t('admin.navItems.memberLevels'),
